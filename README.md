@@ -10,12 +10,12 @@ https://ing.dk/artikel/kan-du-lose-gordiske-tommerknude-249110
 
 # Plan
 
-* The knot consists of 4x4x4 voxels.
-* A stick has 2x2x4 voxels inside the knot.
-* A Stick has a unique "key" describing which voxels are filled and empty
-* The knot has 6 slots. 
-* A stick is assigned a slot and a rotation.
-* A configuration is an assignment of slot and rotation to all 6 sticks
+* The `knot` consists of 4x4x4 voxels.
+* A `stick` is 2x2x4 voxels. 
+* A Stick has a unique `key` describing which voxels are filled and empty
+* The knot has 6 `slots`. 
+* A `Position` is a stick assigned a slot and a rotation.
+* A `configuration` is an assignment of slot and rotation to all 6 sticks
 * A valid configuration has all 6 sticks assigned to slots and rotations so that there are no overlaps in the knot
 
 # Example:
@@ -37,7 +37,20 @@ julia> reshape([1,1,1,1,0,1,1,1,1,1,0,1,0,1,1,1],(2,4,2))
 The indexes run: down, across, forward as in an array.
 
 
+# Slots
+
+The slots are subsets of 4x4x4 voxels:
+![knot](assets/knude.png)
+
+Slot 1 is zero everywhere (i, j, k) except where i: 1..2, j: 2..3, k: 1..4.
+
+## Overlap of slots
+
+Finding the overlap of slots in terms of pixes is just adding the arrays (and checking the sum to be > 1).
+
 # Finding overlap
+
+We still need to translate into local coordinates of a rotated stick in a slot
 
 The `overlap` function returns the voxes that overlap between two slots.
 The numbering of voxes in the know is the same as on the sticks: i,j,k, 
