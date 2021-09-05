@@ -5,6 +5,8 @@ export Stick,  overlap
 struct Stick
     id::Int64
     key::Array{Int64,3}
+    rotation::Int64
+    flip::Int64
 end
 
 """
@@ -35,7 +37,7 @@ function Stick(v::Vector{T}) where T <:Int
 end
 
 function Stick(id::T, v::Vector{T}) where T <:Int
-    Stick(id, Stick(v))
+    Stick(id, Stick(v),0,0)
 end
 
 ## Generate the 6 sticks
@@ -48,6 +50,17 @@ stick_set = [
     Stick(6, [1,2,2,1,1,1,0,0]),
 ]
 
+
+function rotate(stick::Stick)
+    ## Rotate clockwise around long axes
+    Stick(stick.id,mapslices(rotr90, stick.key; dims=(1,3)), (stick.rotation + 1) % 4, stick.flip )
+end
+
+function flip(stick::Stick)
+    ## Flip over the long axes
+    Stick(stick.id,mapslices(rot180, stick.key;dims=(2,3)), stick.rotation, (stick.flip + 1) % 2)
+end
+
 function overlap(s1::Int64,s2::Int64)
     ## Overlapping voxes between slots s1, s2. Just add the matrices!
     voxels(s1) .+ voxels(s2) .> 1
@@ -55,14 +68,30 @@ end
 
 
 """
-    A Slot contains a Stick in a given rotation.
+    A Position is a slot containing a Stick in a given orientation.
     The `overlap` between 2 Slots is the sum of the voxels that are filled by both sticks
 """
 struct Position
-    id::Int64
+    slot::Int64
     stick::Stick
-    rotation::Int64
 end
+
+function overlap(p1::Position, p2::Position; debug=false)
+    res = voxels(p1.slot, p1.stick.key) .+  voxels(p2.slot, p2.stick.key) .>1
+    if(debug)
+        return(res)
+    end
+    sum(res)
+end
+
+function overlap(pos::Vector{Position}; debug=false)
+    res = sum([voxels(p.slot, p.stick.key) for p in pos]) .> 1
+    if(debug)
+        return(res)
+    end
+    sum(res)
+end
+
 
 function voxels1(slot::Int64)
     s = zeros(Int64,4,4,4)
@@ -86,7 +115,7 @@ end
 
 
 function voxels(slot::Int64, key = 1)
-    ## prepare for adding sticks    
+    ## voxels occupied by stick with key = stick.key in slot 
     local s = zeros(Int64,4,4,4)
     if (slot == 1)
         s[1:2,1:4,2:3] .= key
@@ -110,7 +139,9 @@ function voxels(slot::Int64, key = 1)
     s
 end
 
-
+function solve(set::Vector{Stick})
+    
+end
 
 # ## Leftovers
 # function overlap1(x::Int64,y::Int64)

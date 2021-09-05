@@ -21,4 +21,8 @@ using Test
 #    @test overlap(Slot(1,s1,1), Slot(3,s3,1)) == 2
     #    @test overlap(Slot(1,s1,1), Slot(2,s3,1)) == 0
     @test [Tømmerknude.voxels1(x) == Tømmerknude.voxels(x) for x in 1:6] == Bool[1, 1, 1, 1, 1, 1]
+    p1 = Tømmerknude.Position(1,Tømmerknude.stick_set[1])
+    p2 = Tømmerknude.Position(2,Tømmerknude.stick_set[2])
+    p3 = Tømmerknude.Position(3,Tømmerknude.stick_set[3])
+    @test overlap(p1,p2) == 0
 end
