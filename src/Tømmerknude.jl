@@ -64,7 +64,7 @@ struct Position
     rotation::Int64
 end
 
-function voxels(slot::Int64)
+function voxels1(slot::Int64)
     s = zeros(Int64,4,4,4)
     if (slot == 1)
         s[1:2,2:3,1:4] .= 1
@@ -83,6 +83,34 @@ function voxels(slot::Int64)
     end
     s
 end
+
+
+function voxels(slot::Int64, key = 1)
+    ## prepare for adding sticks    
+    local s = zeros(Int64,4,4,4)
+    if (slot == 1)
+        s[1:2,1:4,2:3] .= key
+        s =  mapslices(rotr90,s; dims=(2,3))
+    elseif (slot == 2)
+        s[3:4,1:4,2:3] .= key
+        s =  mapslices(rotr90,s; dims=(2,3))
+    elseif (slot == 3)
+        s[1:2,1:4,2:3] .= key
+        s =  mapslices(rotl90,s; dims=(1,2))
+    elseif (slot == 4)
+        s[3:4,1:4,2:3] .= key
+        s =  mapslices(rotl90,s; dims=(1,2))
+    elseif (slot == 5)
+        s[2:3,1:4,1:2] .= key
+    elseif (slot == 6)
+        s[2:3,1:4,3:4] .= key
+    else
+        error("There is only 6 slots!")
+    end
+    s
+end
+
+
 
 # ## Leftovers
 # function overlap1(x::Int64,y::Int64)
@@ -112,6 +140,13 @@ end
 #     end
 #     sum(collisions)
 # end
+#
+## README
+# We still need to translate into local coordinates of a rotated stick in a slot
+
+# The `overlap` function returns the voxes that overlap between two slots.
+# The numbering of voxes in the know is the same as on the sticks: i,j,k, 
+# where the orientation is given by the following figure:
 
 
 
