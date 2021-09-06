@@ -193,3 +193,35 @@ Mapslice code:
 * (1,3): [i,k] Right
 
 TODO make sure to use `rotr90` and `rotl90` correctly.
+
+# Solutions!
+
+Here's a solution:
+
+``` julia
+julia> Tømmerknude.print_solution(r)
+4×4×4 Array{Int64, 3}:
+[:, :, 1] =
+ 0  1  1  0
+ 4  1  1  4
+ 4  4  4  4
+ 0  5  5  0
+
+[:, :, 2] =
+ 2  1  0  6
+ 4  1  1  4
+ 4  4  5  4
+ 2  5  5  6
+
+[:, :, 3] =
+ 2  1  6  6
+ 2  1  6  6
+ 2  3  3  6
+ 2  0  5  6
+
+[:, :, 4] =
+ 0  1  1  0
+ 3  1  1  3
+ 3  3  3  3
+ 0  5  5  0
+```

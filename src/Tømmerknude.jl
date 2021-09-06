@@ -1,8 +1,8 @@
 module Tømmerknude
 
-export Stick,  overlap
+export Stick,  overlap, voxels, stick_set, rotate, flip
 
-struct Stick
+mutable struct Stick
     id::Int64
     key::Array{Int64,3}
     rotation::Int64
@@ -93,6 +93,7 @@ function overlap(pos::Vector{Position}; debug=false)
 end
 
 
+
 function voxels1(slot::Int64)
     s = zeros(Int64,4,4,4)
     if (slot == 1)
@@ -139,9 +140,52 @@ function voxels(slot::Int64, key = 1)
     s
 end
 
-function solve(set::Vector{Stick})
-    
+function print_solution(solution::Vector{Position})
+    sum([voxels(p) .* p.stick.id for p in solution])
 end
+
+function voxels(pos::Position)
+     voxels(pos.slot, pos.stick.key)
+end
+
+
+Base.copy(s::Stick) = Stick(s.id, s.key, s.rotation, s.flip)
+
+function solve(set::Vector{Stick})
+    return solve(set, Position[])
+end
+
+function solve(set::Vector{Stick}, placed::Vector{Position})
+    if length(set) == 0
+        return [placed]
+    end
+
+    solutions = []
+
+    stick = copy(set[1])
+    rest = copy(set[2:end])
+
+    for slot in 1:6 # Loop over slots
+        if ! any(slot .== [p.slot for p in placed]) # Check if slot isn't occupied
+            for flips in 0:1 # Loop over rotations
+                stick = flip(stick)
+                for rot in 1:4
+                    stick = rotate(stick)
+                    # Note: efter 4 rotationer er vi tilbage til udgangspunktet, så vi er klar til næste ydre loop. I.e. vi behøver ikke at kopiere stick og rotere hhv 1, 2, 3 og 4 gange, vi kan bare rotere en enkelt gang hver iteration.
+                    if overlap(vcat(placed, [Position(slot, stick)])) == 0
+                        append!(solutions, solve(rest, vcat(placed, [Position(slot, stick)])))
+                    end
+                end
+            end
+        end
+    end
+    return solutions
+end
+
+# function solve(set::Vector{Stick})
+    
+# end
+
 
 # ## Leftovers
 # function overlap1(x::Int64,y::Int64)
