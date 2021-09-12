@@ -199,7 +199,10 @@ TODO make sure to use `rotr90` and `rotl90` correctly.
 Here's a solution:
 
 ``` julia
-julia> Tømmerknude.print_solution(r)
+julia> @time s1 = Tømmerknude.solve(stick_set) ;
+14.085495 seconds (97.45 M allocations: 7.069 GiB, 4.44% gc time)
+
+julia> Tømmerknude.print_solution(s1[1])
 4×4×4 Array{Int64, 3}:
 [:, :, 1] =
  0  1  1  0
@@ -224,4 +227,6 @@ julia> Tømmerknude.print_solution(r)
  3  1  1  3
  3  3  3  3
  0  5  5  0
+
 ```
+
