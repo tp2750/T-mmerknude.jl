@@ -1,6 +1,6 @@
 module Tømmerknude
 
-export Stick,  overlap, voxels, stick_set, rotate, flip
+export Stick,  overlap, voxels, stick_set, rotate, flip, sticks_simple, solve, print_solution
 
 mutable struct Stick
     id::Int64
@@ -48,6 +48,16 @@ stick_set = [
     Stick(4, [0,2,1,0,0,1,1,0]),
     Stick(5, [2,1,2,2,0,0,1,0]),
     Stick(6, [1,2,2,1,1,1,0,0]),
+]
+
+## Simple form
+sticks_simple = [
+    Stick(1, [0,0,0,0,0,0,0,0]),
+    Stick(2, [2,2,2,2,0,0,0,0]),
+    Stick(3, [2,2,2,2,0,0,0,0]),
+    Stick(4, [1,2,2,1,1,1,1,1]),
+    Stick(5, [1,2,2,1,1,1,1,1]),
+    Stick(6, [2,0,0,2,0,0,0,0]),
 ]
 
 

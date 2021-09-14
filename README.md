@@ -228,5 +228,47 @@ julia> Tømmerknude.print_solution(s1[1])
  3  3  3  3
  0  5  5  0
 
+julia> length(s1)
+48
 ```
 
+## A simpler puzzle
+
+A simpler variant is described the following figure
+![simple](assets/tomrerknude97.jpg)
+
+It has more solutions , so it takes longer to solve all of them:
+
+``` julia
+julia> @time s2 = solve(sticks_simple);
+ 23.993529 seconds (164.58 M allocations: 12.129 GiB, 5.08% gc time)
+
+julia> print_solution(s2[1])
+4×4×4 Array{Int64, 3}:
+[:, :, 1] =
+ 0  1  1  0
+ 4  1  1  4
+ 4  4  4  4
+ 0  6  6  0
+
+[:, :, 2] =
+ 2  1  1  3
+ 2  1  1  3
+ 2  6  6  3
+ 2  6  6  3
+
+[:, :, 3] =
+ 2  1  1  3
+ 2  1  1  3
+ 2  6  6  3
+ 2  6  6  3
+
+[:, :, 4] =
+ 0  1  1  0
+ 5  1  1  5
+ 5  5  5  5
+ 0  6  6  0
+
+julia> length(s2)
+1536
+```
