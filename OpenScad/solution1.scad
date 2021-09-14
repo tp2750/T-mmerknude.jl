@@ -25,7 +25,7 @@ module cut(key){
 }
 
 module pind(){
-cube([Laengde,Bredde,Bredde], center = true);
+cube([Laengde-Slack/2,Bredde-Slack/2,Bredde-Slack/2], center = true);
 } 
 
 module stick(key) {
